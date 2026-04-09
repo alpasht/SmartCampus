@@ -4,13 +4,13 @@ import com.smartcampus.Room;
 import com.smartcampus.Sensor;
 import com.smartcampus.SensorReading;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MockDatabase {
-    public static final List<Room> ROOMS = new ArrayList<>();
-    public static final List<Sensor> SENSORS = new ArrayList<>();
-    public static final List<SensorReading> MODULES = new ArrayList<>();
+    public static final List<Room> ROOMS = new CopyOnWriteArrayList<>();
+    public static final List<Sensor> SENSORS = new CopyOnWriteArrayList<>();
+    public static final List<SensorReading> MODULES = new CopyOnWriteArrayList<>();
 
     static {
         // Initialise Rooms
