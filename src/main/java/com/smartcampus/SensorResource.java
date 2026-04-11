@@ -29,6 +29,19 @@ public class SensorResource {
         if (sensor == null || sensor.getId() == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid sensor data").build();
         }
+
+        // Business Logic: Verify that the roomId specified in the request body actually exists.
+        boolean roomExists = false;
+        for (Room room : MockDatabase.ROOMS) {
+            if (room.getId().equals(sensor.getRoomId())) {
+                roomExists = true;
+                break;
+            }
+        }
+        if (!roomExists) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Room with specified ID does not exist").build();
+        }
+
         MockDatabase.SENSORS.add(sensor);
         return Response.status(Response.Status.CREATED).entity(sensor).build();
     }
