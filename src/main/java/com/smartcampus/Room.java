@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author imran
  */
-public class Room  {
+public class Room implements BaseModel {
     private String id; // unique id
     private String name; 
     private int capacity ; // Maximum occupancy for safety regulations

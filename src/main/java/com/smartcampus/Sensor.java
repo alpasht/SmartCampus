@@ -8,7 +8,7 @@ package com.smartcampus;
  *
  * @author imran
  */
-public class Sensor  {
+public class Sensor implements BaseModel {
 
     private String id; // Unique id 
     private String type; // Category , e.g., " Temperature ", "Occupancy ", "CO2"

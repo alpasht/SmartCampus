@@ -5,6 +5,6 @@
 package com.smartcampus;
 
 public interface BaseModel {
-    int getId();
-    void setId(int id);
+    String getId();
+    void setId(String id);
 }

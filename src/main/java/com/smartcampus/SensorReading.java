@@ -8,7 +8,7 @@ package com.smartcampus;
  *
  * @author imran
  */
-public class SensorReading{
+public class SensorReading implements BaseModel {
     private String id; // Unique reading event ID (UUID recommended )
     private long timestamp ; // Epoch time (ms) when the reading was captured
     private double value; // The actual metric value recorded bythe hardware
