@@ -15,9 +15,9 @@ public class GenericDAO<T extends BaseModel> {
         return items;
     }
 
-    public T getById(int id) {
+    public T getById(String id) {
         for (T item : items) {
-            if (item.getId() == id) {
+            if (item.getId().equals(id)) {
                 return item;
             }
         }
@@ -25,27 +25,20 @@ public class GenericDAO<T extends BaseModel> {
     }
 
     public void add(T item) {
-        int maxId = 0;
-        for (T i : items) {
-            if (i.getId() > maxId) {
-                maxId = i.getId();
-            }
-        }
-        item.setId(maxId + 1); // Generic auto-increment behaviour
         items.add(item);
     }
 
     public void update(T updatedItem) {
         for (int i = 0; i < items.size(); i++) {
             T item = items.get(i);
-            if (item.getId() == updatedItem.getId()) {
+            if (item.getId().equals(updatedItem.getId())) {
                 items.set(i, updatedItem);
                 return;
             }
         }
     }
 
-    public void delete(int id) {
-        items.removeIf(item -> item.getId() == id);
+    public void delete(String id) {
+        items.removeIf(item -> item.getId().equals(id));
     }
 }
