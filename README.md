@@ -1,10 +1,39 @@
 # SmartCampus
 Coursework for Module 5COSC022W.2 Client-Server Architectures
 
+### Overview of the API Design
 
+The **Smart Campus Sensor & Room Management API** is a RESTful web service developed using the Jersey implementation of JAX-RS**. It serves as the backend for the university’s “Smart Campus” initiative, enabling management of rooms, sensors, and historical sensor readings.
 
+**Base Path**: `/api/v1`
 
+#### Core Resources
+- **Discovery** – `GET /` – Returns API metadata and resource links
+- **Rooms** – `/rooms`
+  - `GET /rooms` – List all rooms
+  - `POST /rooms` – Create a new room
+  - `GET /rooms/{roomId}` – Get room by ID
+  - `DELETE /rooms/{roomId}` – Delete a room (with safety check)
+- **Sensors** – `/sensors`
+  - `GET /sensors` – List all sensors (supports `?type=CO2` filter)
+  - `POST /sensors` – Create a new sensor
+  - `GET /sensors/{sensorId}` – Get sensor by ID
+- **Sensor Readings** (nested sub-resource)
+  - `GET /sensors/{sensorId}/readings` – Get reading history
+  - `POST /sensors/{sensorId}/readings` – Add a new reading (updates sensor’s `currentValue`)
 
+#### Key Design Decisions
+- **In-memory storage**: All data is held in thread-safe collections (`CopyOnWriteArrayList` and `ConcurrentHashMap`) inside `MockDatabase`.
+- **Generic DAO**: A reusable `GenericDAO` layer handles basic CRUD operations for `Room`.
+- **Sub-resource locator pattern**: Nested readings are managed by a separate `SensorReadingResource` class.
+- **Robust error handling**: Custom exceptions are mapped to appropriate HTTP status codes (409 Conflict, 422 Unprocessable Entity, 403 Forbidden) using dedicated `ExceptionMapper` classes. A global `Throwable` mapper provides a clean 500 response.
+- **Logging**: A `LoggingFilter` (implementing `ContainerRequestFilter` and `ContainerResponseFilter`) logs every incoming request and outgoing response.
+- **Business rules enforced**:
+  - Rooms cannot be deleted if they contain active sensors.
+  - Sensors can only be created with a valid existing `roomId`.
+  - Sensors in `MAINTENANCE` status reject new readings.
+
+The API returns consistent JSON responses and follows REST best practices with proper HTTP status codes and meaningful error messages.
 
 # Conceptual Report 
 
