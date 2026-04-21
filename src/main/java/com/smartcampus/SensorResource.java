@@ -18,8 +18,18 @@ public class SensorResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Sensor> getAllSensors() {
-        return MockDatabase.SENSORS;
+    public List<Sensor> getAllSensors(@QueryParam("type") String type) {
+        if (type == null || type.isEmpty()) {
+            return MockDatabase.SENSORS;
+        }
+        
+        java.util.List<Sensor> filteredSensors = new java.util.ArrayList<>();
+        for (Sensor sensor : MockDatabase.SENSORS) {
+            if (type.equalsIgnoreCase(sensor.getType())) {
+                filteredSensors.add(sensor);
+            }
+        }
+        return filteredSensors;
     }
 
     @POST
