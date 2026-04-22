@@ -49,7 +49,7 @@ public class SensorResource {
             }
         }
         if (!roomExists) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Room with specified ID does not exist").build();
+            throw new LinkedResourceNotFoundException("Room with specified ID does not exist");
         }
 
         MockDatabase.SENSORS.add(sensor);
@@ -66,5 +66,10 @@ public class SensorResource {
             }
         }
         return Response.status(Response.Status.NOT_FOUND).entity("Sensor not found").build();
+    }
+
+    @Path("/{sensorId}/readings")
+    public SensorReadingResource getSensorReadingResource(@PathParam("sensorId") String sensorId) {
+        return new SensorReadingResource(sensorId);
     }
 }
