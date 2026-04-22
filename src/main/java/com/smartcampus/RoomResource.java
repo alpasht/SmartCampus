@@ -53,9 +53,7 @@ public class RoomResource {
         // Business Logic: A room cannot be deleted if it still has active sensors assigned to it.
         for (Sensor sensor : MockDatabase.SENSORS) {
             if (roomId.equals(sensor.getRoomId())) {
-                return Response.status(Response.Status.FORBIDDEN)
-                        .entity("Cannot delete room: active sensors are still assigned to it.")
-                        .build();
+                throw new RoomNotEmptyException("Cannot delete room: the room is currently occupied by active hardware.");
             }
         }
 
