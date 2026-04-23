@@ -70,4 +70,24 @@ public class SmartCampusTest {
         assertEquals(1, tempSensors.size());
         assertEquals("S1", tempSensors.get(0).getId());
     }
+
+ @Test
+    public void testDeleteSensorRemovesSensorAndReadings() {
+        MockDatabase.READINGS.put("S1", new java.util.concurrent.CopyOnWriteArrayList<>());
+
+        Response response = sensorResource.deleteSensor("S1");
+        Response fetchResponse = sensorResource.getSensorById("S1");
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), fetchResponse.getStatus());
+        assertEquals("Sensor not found", fetchResponse.getEntity());
+        assertFalse(MockDatabase.READINGS.containsKey("S1"));
+    }
+
+    @Test
+    public void testDeleteSensorNotFound() {
+        Response response = sensorResource.deleteSensor("UNKNOWN");
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+    }
+    
 }
