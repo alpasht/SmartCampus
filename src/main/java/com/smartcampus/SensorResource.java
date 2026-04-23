@@ -68,6 +68,28 @@ public class SensorResource {
         return Response.status(Response.Status.NOT_FOUND).entity("Sensor not found").build();
     }
 
+
+ @DELETE
+    @Path("/{sensorId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteSensor(@PathParam("sensorId") String sensorId) {
+        Sensor sensorToDelete = null;
+        for (Sensor sensor : MockDatabase.SENSORS) {
+            if (sensor.getId().equals(sensorId)) {
+                sensorToDelete = sensor;
+                break;
+            }
+        }
+
+        if (sensorToDelete == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Sensor not found").build();
+        }
+
+        MockDatabase.SENSORS.remove(sensorToDelete);
+        MockDatabase.READINGS.remove(sensorId);
+        return Response.ok().entity("Sensor deleted successfully").build();
+    }
+    
     @Path("/{sensorId}/readings")
     public SensorReadingResource getSensorReadingResource(@PathParam("sensorId") String sensorId) {
         return new SensorReadingResource(sensorId);
