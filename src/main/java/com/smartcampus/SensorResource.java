@@ -40,6 +40,13 @@ public class SensorResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid sensor data").build();
         }
 
+        // Reject duplicate sensor IDs, but allow new IDs to be created.
+        for (Sensor existing : MockDatabase.SENSORS) {
+            if (existing.getId().equals(sensor.getId())) {
+                return Response.status(Response.Status.CONFLICT).entity("Sensor with this ID already exists").build();
+            }
+        }
+        
         // Business Logic: Verify that the roomId specified in the request body actually exists.
         boolean roomExists = false;
         for (Room room : MockDatabase.ROOMS) {
